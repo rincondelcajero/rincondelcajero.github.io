@@ -1,5 +1,3 @@
-/* Cierre de Caja: calcula cuánto va al administrador y cuánto te queda */
-
 const Comisiones = (() => {
   const { storage, toast, escapeHtml, fmtMoneda, fmtFecha, descargarArchivo } = TRC;
   const KEY = 'comisiones:historial';

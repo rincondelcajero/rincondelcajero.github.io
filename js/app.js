@@ -1,5 +1,3 @@
-/* Navegación y arranque */
-
 (function () {
   'use strict';
 

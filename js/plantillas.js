@@ -1,5 +1,3 @@
-/* Plantillas de mensajes: categorías, buscador y personalizadas */
-
 const Plantillas = (() => {
   const { storage, toast, escapeHtml } = TRC;
   const KEY = 'plantillas:personalizadas';

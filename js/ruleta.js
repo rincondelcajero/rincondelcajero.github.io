@@ -1,5 +1,3 @@
-/* Ruleta de sorteo con límite de 100 participantes, texto siempre visible */
-
 const Ruleta = (() => {
   const { storage, toast, escapeHtml, fmtFecha, indiceAleatorio, Confetti, vibrar } = TRC;
 

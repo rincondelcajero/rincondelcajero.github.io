@@ -1,5 +1,3 @@
-/* Utilidades globales compartidas por todas las herramientas */
-
 const TRC = (() => {
   const PREFIX = 'trc:';
 

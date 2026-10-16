@@ -1,7 +1,3 @@
-/* ==========================================================
-   El Rincón del Cajero — Responsive
-   ========================================================== */
-
 @media (max-width: 1024px) {
   .ruleta-layout { grid-template-columns: 1fr; }
   .ruleta-canvas-container { max-width: 400px; }

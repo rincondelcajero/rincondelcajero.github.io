@@ -1,7 +1,3 @@
-/* ==========================================================
-   El Rincón del Cajero — Componentes
-   ========================================================== */
-
 .panel {
   background: var(--surface);
   border: 1px solid var(--border);
@@ -829,10 +825,6 @@ input:focus, textarea:focus, select:focus, input[type="search"]:focus {
 .bottom-nav-item.active { color: var(--primary); }
 .bottom-nav-item.active svg { transform: translateY(-1px); }
 
-/* ==========================================================
-   Tu web — sección de venta de páginas
-   ========================================================== */
-
 .servicio-hero {
   display: flex;
   gap: 20px;
@@ -928,10 +920,6 @@ input:focus, textarea:focus, select:focus, input[type="search"]:focus {
 }
 .servicio-cta .text-block.small { margin-top: 16px; }
 
-/* ==========================================================
-   Controles deshabilitados
-   ========================================================== */
-
 input:disabled,
 textarea:disabled,
 select:disabled {
@@ -947,10 +935,6 @@ select:disabled {
     border-color: var(--border);
   }
 }
-
-/* ==========================================================
-   PWA install banner
-   ========================================================== */
 
 .pwa-banner {
   position: fixed;

@@ -1,5 +1,3 @@
-/* Prompt sutil de instalación PWA — multiplataforma, no invasivo */
-
 const PWAInstall = (() => {
   const KEY_DESCARTADO = 'pwa:descartado';
   const KEY_INSTALADO  = 'pwa:instalado';

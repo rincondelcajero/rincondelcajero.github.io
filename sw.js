@@ -1,5 +1,3 @@
-/* Service Worker — El Rincón del Cajero */
-
 const CACHE_NAME = 'trc-v5';
 
 const ASSETS = [
@@ -21,7 +19,6 @@ const ASSETS = [
   './js/app.js'
 ];
 
-/* ---------- Install ---------- */
 self.addEventListener('install', (event) => {
   event.waitUntil(
     caches.open(CACHE_NAME).then((cache) => {
@@ -37,7 +34,6 @@ self.addEventListener('install', (event) => {
   );
 });
 
-/* ---------- Activate ---------- */
 self.addEventListener('activate', (event) => {
   event.waitUntil(
     caches.keys().then((keys) =>
@@ -50,7 +46,6 @@ self.addEventListener('activate', (event) => {
   );
 });
 
-/* ---------- Fetch ---------- */
 self.addEventListener('fetch', (event) => {
   const req = event.request;
 
@@ -99,7 +94,6 @@ self.addEventListener('fetch', (event) => {
   );
 });
 
-/* ---------- Mensajes ---------- */
 self.addEventListener('message', (event) => {
   if (event.data === 'SKIP_WAITING') {
     self.skipWaiting();
