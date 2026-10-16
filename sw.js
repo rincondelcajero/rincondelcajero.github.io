@@ -1,11 +1,13 @@
 /* Service Worker — El Rincón del Cajero */
 
-const CACHE_NAME = 'trc-v3';
+const CACHE_NAME = 'trc-v5';
 
 const ASSETS = [
   './',
   './index.html',
   './manifest.json',
+  './robots.txt',
+  './sitemap.xml',
   './icons/icon.svg',
   './icons/icon-maskable.svg',
   './css/global.css',
@@ -15,6 +17,7 @@ const ASSETS = [
   './js/ruleta.js',
   './js/comisiones.js',
   './js/plantillas.js',
+  './js/pwa-install.js',
   './js/app.js'
 ];
 

@@ -53,7 +53,7 @@ const TRC = (() => {
   }
 
   function descargarArchivo(nombre, contenido, tipo = 'text/plain') {
-    const blob = new Blob([contenido], { type: tipo + ';charset=utf-8' });
+    const blob = new Blob(['\ufeff' + contenido], { type: tipo + ';charset=utf-8' });
     const url = URL.createObjectURL(blob);
     const a = document.createElement('a');
     a.href = url;

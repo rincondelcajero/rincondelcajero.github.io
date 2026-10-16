@@ -110,7 +110,6 @@ const Ruleta = (() => {
     inicializado = true;
   }
 
-  /* ---------- Bloqueo/desbloqueo de controles durante el giro ---------- */
   function setControlesBloqueados(bloqueado) {
     btnGirar.disabled = bloqueado;
     btnEjemplo.disabled = bloqueado;

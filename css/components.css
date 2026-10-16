@@ -947,3 +947,128 @@ select:disabled {
     border-color: var(--border);
   }
 }
+
+/* ==========================================================
+   PWA install banner
+   ========================================================== */
+
+.pwa-banner {
+  position: fixed;
+  left: 16px;
+  right: 16px;
+  bottom: 16px;
+  z-index: 180;
+  background: var(--surface-2);
+  border: 1px solid var(--border-2);
+  border-radius: var(--radius);
+  padding: 12px 14px;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  box-shadow: var(--shadow-lg);
+  max-width: 520px;
+  margin: 0 auto;
+  transform: translateY(calc(100% + 24px));
+  opacity: 0;
+  transition: transform .45s cubic-bezier(.34, 1.4, .64, 1), opacity .3s ease;
+  will-change: transform, opacity;
+}
+.pwa-banner.show {
+  transform: translateY(0);
+  opacity: 1;
+}
+.pwa-banner[hidden] {
+  display: none !important;
+}
+
+@media (max-width: 860px) {
+  .pwa-banner {
+    bottom: calc(var(--bottom-nav-h) + 12px + env(safe-area-inset-bottom));
+  }
+}
+
+.pwa-banner-icon {
+  width: 40px;
+  height: 40px;
+  flex-shrink: 0;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  background: var(--primary-soft);
+  border: 1px solid var(--primary-line);
+  border-radius: var(--radius-sm);
+  color: var(--primary);
+}
+.pwa-banner-icon svg { width: 20px; height: 20px; }
+
+.pwa-banner-texto {
+  flex: 1;
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+.pwa-banner-titulo {
+  font-size: var(--fs-sm);
+  font-weight: 600;
+  color: var(--text);
+  letter-spacing: -.005em;
+  line-height: 1.25;
+}
+.pwa-banner-sub {
+  font-size: var(--fs-xs);
+  color: var(--text-2);
+  line-height: 1.35;
+}
+
+.pwa-banner-btn {
+  flex-shrink: 0;
+  padding: 8px 14px;
+  min-height: 36px;
+  background: var(--primary);
+  color: #17130a;
+  border: none;
+  border-radius: var(--radius-sm);
+  font-size: var(--fs-xs);
+  font-weight: 600;
+  cursor: pointer;
+  letter-spacing: -.005em;
+  transition: background var(--transition), transform .1s ease;
+}
+.pwa-banner-btn:active { transform: scale(.97); }
+@media (hover: hover) {
+  .pwa-banner-btn:hover { background: var(--primary-2); }
+}
+
+.pwa-banner-cerrar {
+  flex-shrink: 0;
+  width: 32px;
+  height: 32px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  background: none;
+  border: none;
+  color: var(--muted);
+  cursor: pointer;
+  border-radius: var(--radius-sm);
+  transition: color var(--transition), background var(--transition);
+}
+.pwa-banner-cerrar svg { width: 14px; height: 14px; }
+@media (hover: hover) {
+  .pwa-banner-cerrar:hover { color: var(--text); background: var(--surface-3); }
+}
+
+@media (max-width: 380px) {
+  .pwa-banner {
+    left: 10px;
+    right: 10px;
+    padding: 10px 12px;
+    gap: 10px;
+  }
+  .pwa-banner-icon { width: 34px; height: 34px; }
+  .pwa-banner-icon svg { width: 18px; height: 18px; }
+  .pwa-banner-titulo { font-size: var(--fs-xs); }
+  .pwa-banner-sub { display: none; }
+  .pwa-banner-btn { padding: 7px 12px; }
+}

@@ -103,6 +103,11 @@
     try { Plantillas.init(); } catch (e) { console.error('Plantillas:', e); }
   }
 
+  function initInstallPrompt() {
+    if (typeof PWAInstall === 'undefined') return;
+    try { PWAInstall.init(); } catch (e) { console.error('PWAInstall:', e); }
+  }
+
   function initServiceWorker() {
     if (!('serviceWorker' in navigator)) return;
 
@@ -139,6 +144,7 @@
   function arrancar() {
     initNavegacion();
     initHerramientas();
+    initInstallPrompt();
     initServiceWorker();
   }
 
