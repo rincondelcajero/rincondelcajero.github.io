@@ -1,0 +1,158 @@
+/* ==========================================================
+   El Rincón del Cajero — Responsive
+   ========================================================== */
+
+@media (max-width: 1024px) {
+  .ruleta-layout { grid-template-columns: 1fr; }
+  .ruleta-canvas-container { max-width: 400px; }
+}
+
+@media (max-width: 860px) {
+  .nav { display: none !important; }
+  .menu-toggle { display: none !important; }
+  .bottom-nav { display: flex; }
+
+  :root { --container: calc(100% - 1.5rem); }
+
+  .header-inner { padding: 10px 0; gap: 12px; }
+  .logo { font-size: var(--fs-sm); }
+  .logo-mark { width: 22px; height: 22px; }
+
+  .main {
+    padding: var(--space-md) 0 calc(var(--bottom-nav-h) + 24px + env(safe-area-inset-bottom));
+  }
+  .footer {
+    padding-bottom: calc(var(--bottom-nav-h) + 16px + env(safe-area-inset-bottom));
+  }
+
+  input[type="text"],
+  input[type="number"],
+  input[type="search"],
+  textarea,
+  select {
+    font-size: 16px;
+  }
+
+  .toast {
+    bottom: calc(var(--bottom-nav-h) + 14px + env(safe-area-inset-bottom));
+  }
+
+  .hero {
+    padding: 28px 0 32px;
+    margin-bottom: var(--space-md);
+  }
+  .hero h1 { font-size: clamp(1.5rem, 6vw, 2rem); }
+  .hero-actions {
+    flex-direction: column;
+    margin-top: 22px;
+  }
+  .hero-actions .btn { width: 100%; }
+
+  .panel-head {
+    flex-direction: column;
+    align-items: stretch;
+    gap: 10px;
+  }
+  .panel-head h3 {
+    justify-content: space-between;
+    width: 100%;
+  }
+  .panel-head .row-btns,
+  .panel-head > .btn {
+    width: 100%;
+  }
+  .panel-head .row-btns .btn {
+    flex: 1;
+    min-width: 0;
+  }
+
+  .hist-fecha { display: none; }
+  .btn-lg { padding: 15px; font-size: var(--fs-base); }
+}
+
+@media (max-width: 560px) {
+  .ruleta-canvas-container { max-width: 300px; }
+
+  .resultado-item {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 4px;
+    padding: 14px;
+  }
+  .resultado-valor { font-size: var(--fs-lg); }
+
+  .tabla th, .tabla td { padding: 10px 12px; font-size: var(--fs-xs); }
+  .tabla { min-width: 460px; }
+
+  .card { padding: 18px; min-height: 140px; }
+  .panel { padding: 14px; border-radius: var(--radius-sm); }
+
+  .empty-state { padding: 24px 16px; }
+
+  .celebration-name { font-size: clamp(1.5rem, 8vw, 2.25rem); }
+
+  .modal {
+    padding: 0;
+    align-items: flex-end;
+  }
+  .modal-content {
+    max-width: 100%;
+    max-height: 92dvh;
+    border-radius: var(--radius) var(--radius) 0 0;
+    border-bottom: none;
+    transform: translateY(20px);
+  }
+  .modal.show .modal-content {
+    transform: translateY(0);
+  }
+  .modal-head,
+  .modal-body,
+  .modal-foot {
+    padding-left: 16px;
+    padding-right: 16px;
+  }
+  .modal-foot {
+    padding-bottom: calc(14px + env(safe-area-inset-bottom));
+  }
+
+  .servicio-hero {
+    flex-direction: column;
+    gap: 14px;
+  }
+  .servicio-cta {
+    padding: var(--space-md) var(--space-sm);
+  }
+}
+
+@media (max-width: 380px) {
+  .logo-text { font-size: .8rem; }
+  .logo-mark { width: 20px; height: 20px; }
+  .ruleta-canvas-container { max-width: 260px; }
+  .bottom-nav-item { font-size: 9px; min-height: 56px; }
+  .bottom-nav-item svg { width: 20px; height: 20px; }
+  :root { --bottom-nav-h: 56px; }
+}
+
+@media (max-width: 420px) {
+  .bottom-nav-item { padding: 6px 2px; }
+  .bottom-nav-item span { font-size: 9px; }
+}
+
+@media (max-height: 520px) and (orientation: landscape) {
+  .hero { padding: 20px 0 24px; }
+  .main { padding-top: 12px; }
+  .celebration-trophy { width: 48px; }
+}
+
+@media (min-width: 1600px) {
+  :root { --container: min(1280px, 100% - 4rem); }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation-duration: .01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: .01ms !important;
+  }
+  html { scroll-behavior: auto; }
+}

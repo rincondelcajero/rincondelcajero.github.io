@@ -1,0 +1,59 @@
+{
+  "name": "El Rincón del Cajero",
+  "short_name": "Rincón Cajero",
+  "description": "Herramientas para cajeros de casino online: ruleta de sorteo, cierre de caja y plantillas de mensajes.",
+  "lang": "es-AR",
+  "dir": "ltr",
+  "start_url": "./",
+  "scope": "./",
+  "display": "standalone",
+  "display_override": ["standalone", "minimal-ui"],
+  "orientation": "portrait-primary",
+  "background_color": "#0a0b0d",
+  "theme_color": "#0a0b0d",
+  "categories": ["business", "productivity", "utilities"],
+  "icons": [
+    {
+      "src": "icons/icon.svg",
+      "sizes": "any",
+      "type": "image/svg+xml",
+      "purpose": "any"
+    },
+    {
+      "src": "icons/icon-maskable.svg",
+      "sizes": "any",
+      "type": "image/svg+xml",
+      "purpose": "maskable"
+    }
+  ],
+  "shortcuts": [
+    {
+      "name": "Ruleta",
+      "short_name": "Ruleta",
+      "description": "Abrir la ruleta de sorteo",
+      "url": "./#ruleta",
+      "icons": [{ "src": "icons/icon.svg", "sizes": "any", "type": "image/svg+xml" }]
+    },
+    {
+      "name": "Cierre de caja",
+      "short_name": "Cierre",
+      "description": "Calcular un cierre de caja",
+      "url": "./#comisiones",
+      "icons": [{ "src": "icons/icon.svg", "sizes": "any", "type": "image/svg+xml" }]
+    },
+    {
+      "name": "Plantillas",
+      "short_name": "Plantillas",
+      "description": "Ver plantillas de mensajes",
+      "url": "./#plantillas",
+      "icons": [{ "src": "icons/icon.svg", "sizes": "any", "type": "image/svg+xml" }]
+    },
+    {
+      "name": "Tu web",
+      "short_name": "Tu web",
+      "description": "Página de atención para cajeros",
+      "url": "./#servicios",
+      "icons": [{ "src": "icons/icon.svg", "sizes": "any", "type": "image/svg+xml" }]
+    }
+  ]
+}
