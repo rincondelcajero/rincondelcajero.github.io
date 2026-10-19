@@ -2,7 +2,7 @@
   "id": "./",
   "name": "El Rincón del Cajero",
   "short_name": "Rincón Cajero",
-  "description": "Herramientas para cajeros de casino online: ruleta de sorteo, cierre de caja y plantillas de mensajes.",
+  "description": "Herramientas para cajeros de casino online: ruleta de sorteo, cierre de caja, plantillas de mensajes y generador de QR.",
   "lang": "es-AR",
   "dir": "ltr",
   "start_url": "./",
@@ -13,6 +13,7 @@
   "background_color": "#0a0b0d",
   "theme_color": "#0a0b0d",
   "categories": ["business", "productivity", "utilities"],
+  "prefer_related_applications": false,
   "icons": [
     {
       "src": "icons/icon.svg",
@@ -43,17 +44,17 @@
       "icons": [{ "src": "icons/icon.svg", "sizes": "any", "type": "image/svg+xml" }]
     },
     {
+      "name": "Generador de QR",
+      "short_name": "QR",
+      "description": "Generar códigos QR",
+      "url": "./#qr",
+      "icons": [{ "src": "icons/icon.svg", "sizes": "any", "type": "image/svg+xml" }]
+    },
+    {
       "name": "Plantillas",
       "short_name": "Plantillas",
       "description": "Ver plantillas de mensajes",
       "url": "./#plantillas",
-      "icons": [{ "src": "icons/icon.svg", "sizes": "any", "type": "image/svg+xml" }]
-    },
-    {
-      "name": "Tu web",
-      "short_name": "Tu web",
-      "description": "Página de atención para cajeros",
-      "url": "./#servicios",
       "icons": [{ "src": "icons/icon.svg", "sizes": "any", "type": "image/svg+xml" }]
     }
   ]

@@ -8,8 +8,8 @@
     const toggle = document.getElementById('menu-toggle');
 
     function cerrarMenu() {
-      nav.classList.remove('open');
-      toggle.setAttribute('aria-expanded', 'false');
+      if (nav) nav.classList.remove('open');
+      if (toggle) toggle.setAttribute('aria-expanded', 'false');
     }
 
     function irA(id) {
@@ -39,12 +39,9 @@
         e.preventDefault();
         const id = link.dataset.nav;
         if (!id) return;
-
         if (TRC && typeof TRC.vibrar === 'function') TRC.vibrar(6);
-
         if (history.replaceState) history.replaceState(null, '', '#' + id);
         else location.hash = id;
-
         irA(id);
       });
     });
@@ -58,14 +55,12 @@
     }
 
     document.addEventListener('click', e => {
-      if (!nav.classList.contains('open')) return;
-      if (!nav.contains(e.target) && !toggle.contains(e.target)) {
-        cerrarMenu();
-      }
+      if (!nav || !nav.classList.contains('open')) return;
+      if (!nav.contains(e.target) && toggle && !toggle.contains(e.target)) cerrarMenu();
     });
 
     document.addEventListener('keydown', e => {
-      if (e.key === 'Escape' && nav.classList.contains('open')) cerrarMenu();
+      if (e.key === 'Escape' && nav && nav.classList.contains('open')) cerrarMenu();
     });
 
     const inicial = (location.hash || '#inicio').slice(1);
@@ -99,6 +94,7 @@
     try { Ruleta.init(); } catch (e) { console.error('Ruleta:', e); }
     try { Comisiones.init(); } catch (e) { console.error('Comisiones:', e); }
     try { Plantillas.init(); } catch (e) { console.error('Plantillas:', e); }
+    try { QR.init(); } catch (e) { console.error('QR:', e); }
   }
 
   function initInstallPrompt() {
@@ -108,34 +104,15 @@
 
   function initServiceWorker() {
     if (!('serviceWorker' in navigator)) return;
-
     const esSeguro =
       location.protocol === 'https:' ||
       location.hostname === 'localhost' ||
       location.hostname === '127.0.0.1';
-
-    if (!esSeguro) {
-      console.info('[PWA] Service Worker no registrado: se requiere HTTPS o localhost.');
-      return;
-    }
-
+    if (!esSeguro) return;
     window.addEventListener('load', () => {
-      navigator.serviceWorker
-        .register('sw.js')
-        .then((reg) => {
-          reg.addEventListener('updatefound', () => {
-            const nuevoSW = reg.installing;
-            if (!nuevoSW) return;
-            nuevoSW.addEventListener('statechange', () => {
-              if (nuevoSW.state === 'installed' && navigator.serviceWorker.controller) {
-                console.info('[PWA] Nueva versión disponible. Recargá para actualizar.');
-              }
-            });
-          });
-        })
-        .catch((err) => {
-          console.warn('[PWA] No se pudo registrar el Service Worker:', err);
-        });
+      navigator.serviceWorker.register('sw.js').catch((err) => {
+        console.warn('[PWA] Error SW:', err);
+      });
     });
   }
 

@@ -24,6 +24,8 @@
   input[type="text"],
   input[type="number"],
   input[type="search"],
+  input[type="tel"],
+  input[type="email"],
   textarea,
   select {
     font-size: 16px;
@@ -118,6 +120,20 @@
   .servicio-cta {
     padding: var(--space-md) var(--space-sm);
   }
+
+  .qr-opciones { grid-template-columns: 1fr; }
+  .qr-preview-container { min-height: 200px; padding: 12px; }
+  .qr-preview canvas { max-height: 260px; width: auto; }
+  .qr-acciones .btn { min-width: 100%; }
+  .qr-hist-fecha { display: none; }
+}
+
+@media (max-width: 420px) {
+  .bottom-nav-item { padding: 6px 2px; }
+  .bottom-nav-item span { font-size: 9px; }
+  .bottom-nav-item svg { width: 20px; height: 20px; }
+
+  .qr-tipo { padding: 7px 12px; font-size: var(--fs-xs); min-height: 34px; }
 }
 
 @media (max-width: 380px) {
@@ -129,9 +145,9 @@
   :root { --bottom-nav-h: 56px; }
 }
 
-@media (max-width: 420px) {
-  .bottom-nav-item { padding: 6px 2px; }
-  .bottom-nav-item span { font-size: 9px; }
+@media (max-width: 360px) {
+  .bottom-nav-item span { display: none; }
+  .bottom-nav-item svg { width: 24px; height: 24px; }
 }
 
 @media (max-height: 520px) and (orientation: landscape) {

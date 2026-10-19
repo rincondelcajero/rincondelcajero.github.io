@@ -1,4 +1,4 @@
-const CACHE_NAME = 'trc-v5';
+const CACHE_NAME = 'trc-v7';
 
 const ASSETS = [
   './',
@@ -15,6 +15,8 @@ const ASSETS = [
   './js/ruleta.js',
   './js/comisiones.js',
   './js/plantillas.js',
+  './js/qrcode.js',
+  './js/qr.js',
   './js/pwa-install.js',
   './js/app.js'
 ];
@@ -38,9 +40,7 @@ self.addEventListener('activate', (event) => {
   event.waitUntil(
     caches.keys().then((keys) =>
       Promise.all(
-        keys
-          .filter((key) => key !== CACHE_NAME)
-          .map((key) => caches.delete(key))
+        keys.filter((key) => key !== CACHE_NAME).map((key) => caches.delete(key))
       )
     ).then(() => self.clients.claim())
   );
@@ -48,16 +48,10 @@ self.addEventListener('activate', (event) => {
 
 self.addEventListener('fetch', (event) => {
   const req = event.request;
-
   if (req.method !== 'GET') return;
 
   let url;
-  try {
-    url = new URL(req.url);
-  } catch {
-    return;
-  }
-
+  try { url = new URL(req.url); } catch { return; }
   if (url.origin !== self.location.origin) return;
 
   const accept = req.headers.get('accept') || '';
@@ -71,9 +65,7 @@ self.addEventListener('fetch', (event) => {
           }
           return res;
         })
-        .catch(() =>
-          caches.match(req).then((cached) => cached || caches.match('./index.html'))
-        )
+        .catch(() => caches.match(req).then((cached) => cached || caches.match('./index.html')))
     );
     return;
   }
@@ -89,13 +81,11 @@ self.addEventListener('fetch', (event) => {
           }
           return res;
         })
-        .catch(() => cached);
+        .catch(() => caches.match('./index.html'));
     })
   );
 });
 
 self.addEventListener('message', (event) => {
-  if (event.data === 'SKIP_WAITING') {
-    self.skipWaiting();
-  }
+  if (event.data === 'SKIP_WAITING') self.skipWaiting();
 });
