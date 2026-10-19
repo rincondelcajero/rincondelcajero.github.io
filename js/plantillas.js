@@ -10,9 +10,8 @@ const Plantillas = (() => {
     { id: 'promociones', label: 'Promociones' },
     { id: 'soporte', label: 'Soporte' },
     { id: 'agradecimiento', label: 'Agradecimiento' },
-    { id: 'personalizadas', label: 'Mis plantillas' },
+    { id: 'personalizadas', label: 'Mis plantillas' }
   ];
-
   const CATEGORIAS_MODAL = [
     { id: 'bienvenida', label: 'Bienvenida' },
     { id: 'pagos', label: 'Pagos' },
@@ -20,36 +19,30 @@ const Plantillas = (() => {
     { id: 'promociones', label: 'Promociones' },
     { id: 'soporte', label: 'Soporte' },
     { id: 'agradecimiento', label: 'Agradecimiento' },
-    { id: 'otros', label: 'Otros' },
+    { id: 'otros', label: 'Otros' }
   ];
-
   const BASE = [
     { id: 'bienvenida', cat: 'bienvenida', titulo: 'Bienvenida', texto: '¡Hola {nombre}! Bienvenido/a a {casino}. Cualquier duda que tengas, estoy a disposición. ¡Mucha suerte!' },
     { id: 'primer-contacto', cat: 'bienvenida', titulo: 'Primer contacto', texto: 'Hola {nombre}, soy tu cajero asignado en {casino}. Cuando necesites hacer una operación, escribime por acá y te ayudo al toque.' },
     { id: 'registro-ok', cat: 'bienvenida', titulo: 'Registro confirmado', texto: '{nombre}, tu registro en {casino} ya está activo. Cuando quieras hacer tu primer depósito, avisame.' },
-
     { id: 'deposito-ok', cat: 'pagos', titulo: 'Depósito acreditado', texto: '{nombre}, tu depósito de ${monto} fue acreditado correctamente en {casino}. ¡Ya podés jugar!' },
     { id: 'datos-pago', cat: 'pagos', titulo: 'Datos para transferir', texto: '{nombre}, para acreditar tu saldo transferí ${monto} a: {extra}. Avisame cuando lo hagas y lo confirmo al toque.' },
     { id: 'recordatorio-pago', cat: 'pagos', titulo: 'Recordatorio de pago', texto: '{nombre}, te recuerdo que quedó pendiente un pago de ${monto}. Cuando puedas, avisame y lo resolvemos. ¡Gracias!' },
     { id: 'pago-recibido', cat: 'pagos', titulo: 'Pago recibido', texto: '{nombre}, recibí tu pago de ${monto}. Ya estoy procesando la acreditación, en unos minutos te confirmo.' },
     { id: 'error-pago', cat: 'pagos', titulo: 'Problema con el pago', texto: '{nombre}, tu pago de ${monto} no se pudo procesar. ¿Podés revisar los datos y volver a intentar? Cualquier cosa avisame.' },
-
     { id: 'retiro-proceso', cat: 'retiros', titulo: 'Retiro en proceso', texto: 'Hola {nombre}, tu retiro de ${monto} está siendo procesado. Te aviso apenas se complete. Gracias por la paciencia.' },
     { id: 'retiro-ok', cat: 'retiros', titulo: 'Retiro completado', texto: '{nombre}, tu retiro de ${monto} ya fue enviado. En breve lo vas a ver acreditado. ¡Gracias por jugar con nosotros!' },
     { id: 'retiro-datos', cat: 'retiros', titulo: 'Pedir datos para retiro', texto: '{nombre}, para procesar tu retiro de ${monto} necesito que me pases tu {extra}. Avisame y lo gestiono.' },
     { id: 'retiro-pendiente', cat: 'retiros', titulo: 'Retiro pendiente', texto: '{nombre}, tu retiro de ${monto} quedó pendiente de verificación. En cuanto se apruebe, te aviso.' },
-
     { id: 'promo-activa', cat: 'promociones', titulo: 'Promoción activa', texto: '{nombre}, tenemos una promo activa en {casino}: {extra}. ¿Te interesa que te cuente los detalles?' },
     { id: 'bono-disponible', cat: 'promociones', titulo: 'Bono disponible', texto: '{nombre}, tenés un bono disponible en {casino} por ${monto}. ¿Querés que te explique cómo activarlo?' },
     { id: 'torneo', cat: 'promociones', titulo: 'Torneo o sorteo', texto: '{nombre}, se viene un torneo en {casino} con premios de ${monto}. Si querés participar, avisame y te paso las bases.' },
-
     { id: 'espera', cat: 'soporte', titulo: 'Tiempo de espera', texto: '{nombre}, estoy atendiendo otra consulta. En unos minutos te respondo. Gracias por la paciencia.' },
     { id: 'consulta-recibida', cat: 'soporte', titulo: 'Consulta recibida', texto: '{nombre}, recibí tu consulta. Estoy revisándolo y te confirmo en cuanto tenga novedades.' },
     { id: 'demora-tecnica', cat: 'soporte', titulo: 'Demora técnica', texto: '{nombre}, estamos teniendo una demora técnica en {casino}. Te aviso apenas se normalice. Disculpá las molestias.' },
     { id: 'datos-faltantes', cat: 'soporte', titulo: 'Faltan datos', texto: '{nombre}, para poder ayudarte necesito que me confirmes {extra}. Avisame y seguimos.' },
-
     { id: 'gracias', cat: 'agradecimiento', titulo: 'Agradecimiento', texto: '¡Gracias por la confianza, {nombre}! Cualquier cosa que necesites en {casino}, escribime sin problema.' },
-    { id: 'cierre-conv', cat: 'agradecimiento', titulo: 'Cierre de conversación', texto: 'Gracias por escribirme, {nombre}. Cualquier cosa que surja, acá estoy. ¡Buena suerte!' },
+    { id: 'cierre-conv', cat: 'agradecimiento', titulo: 'Cierre de conversación', texto: 'Gracias por escribirme, {nombre}. Cualquier cosa que surja, acá estoy. ¡Buena suerte!' }
   ];
 
   let categoriaActiva = 'todas';
@@ -61,11 +54,9 @@ const Plantillas = (() => {
     if (inicializado) return;
     const lista = document.getElementById('pl-lista');
     if (!lista) return;
-
     ['pl-nombre', 'pl-monto', 'pl-casino', 'pl-extra'].forEach(id => {
       document.getElementById(id).addEventListener('input', render);
     });
-
     const inputBuscar = document.getElementById('pl-buscar');
     const btnClear = document.getElementById('pl-buscar-clear');
     inputBuscar.addEventListener('input', () => {
@@ -80,17 +71,14 @@ const Plantillas = (() => {
       render();
       inputBuscar.focus();
     });
-
     document.getElementById('pl-tabs').addEventListener('click', e => {
       const tab = e.target.closest('.pl-tab');
       if (!tab) return;
       categoriaActiva = tab.dataset.cat;
       render();
     });
-
     document.getElementById('pl-nueva').addEventListener('click', () => abrirModal());
     document.getElementById('pl-modal-guardar').addEventListener('click', guardarModal);
-
     document.getElementById('pl-limpiar-vars').addEventListener('click', () => {
       ['pl-nombre', 'pl-monto', 'pl-casino', 'pl-extra'].forEach(id => {
         document.getElementById(id).value = '';
@@ -98,7 +86,6 @@ const Plantillas = (() => {
       render();
       toast('Variables limpiadas');
     });
-
     document.querySelectorAll('[data-modal-close]').forEach(el => {
       el.addEventListener('click', cerrarModal);
     });
@@ -108,7 +95,6 @@ const Plantillas = (() => {
         if (modal && !modal.hidden) cerrarModal();
       }
     });
-
     ['pl-modal-titulo', 'pl-modal-texto'].forEach(id => {
       document.getElementById(id).addEventListener('keydown', e => {
         if (e.key === 'Enter' && (e.ctrlKey || e.metaKey)) {
@@ -117,28 +103,18 @@ const Plantillas = (() => {
         }
       });
     });
-
     renderTabs();
     render();
     inicializado = true;
   }
 
-  function getPersonalizadas() {
-    return storage.get(KEY, []);
-  }
-
-  function setPersonalizadas(lista) {
-    storage.set(KEY, lista);
-  }
+  function getPersonalizadas() { return storage.get(KEY, []); }
+  function setPersonalizadas(lista) { storage.set(KEY, lista); }
 
   function getAll() {
     const personalizadas = getPersonalizadas().map(p => ({
-      id: p.id,
-      cat: 'personalizadas',
-      catLabel: p.cat,
-      titulo: p.titulo,
-      texto: p.texto,
-      custom: true,
+      id: p.id, cat: 'personalizadas', catLabel: p.cat,
+      titulo: p.titulo, texto: p.texto, custom: true
     }));
     const base = BASE.map(b => ({ ...b, catLabel: b.cat, custom: false }));
     return [...personalizadas, ...base];
@@ -151,13 +127,11 @@ const Plantillas = (() => {
 
   function filtrar(lista) {
     let filtradas = lista;
-
     if (categoriaActiva === 'personalizadas') {
       filtradas = filtradas.filter(p => p.custom);
     } else if (categoriaActiva !== 'todas') {
       filtradas = filtradas.filter(p => p.catLabel === categoriaActiva);
     }
-
     if (busqueda) {
       filtradas = filtradas.filter(p =>
         p.titulo.toLowerCase().includes(busqueda) ||
@@ -181,7 +155,6 @@ const Plantillas = (() => {
     const monto = document.getElementById('pl-monto').value.trim() || '{monto}';
     const casino = document.getElementById('pl-casino').value.trim() || '{casino}';
     const extra = document.getElementById('pl-extra').value.trim() || '{extra}';
-
     return texto
       .replace(/\{nombre\}/g, nombre)
       .replace(/\{monto\}/g, monto)
@@ -194,16 +167,12 @@ const Plantillas = (() => {
     const vacio = document.getElementById('pl-vacio');
     const vacioTexto = document.getElementById('pl-vacio-texto');
     const counter = document.getElementById('pl-counter');
-
     const todas = getAll();
     const visibles = filtrar(todas);
-
     if (counter) counter.textContent = todas.length;
-
     document.querySelectorAll('.pl-tab').forEach(t => {
       t.classList.toggle('active', t.dataset.cat === categoriaActiva);
     });
-
     if (!visibles.length) {
       cont.innerHTML = '';
       vacio.hidden = false;
@@ -217,7 +186,6 @@ const Plantillas = (() => {
       return;
     }
     vacio.hidden = true;
-
     cont.innerHTML = visibles.map(p => {
       const preview = aplicarVariables(p.texto);
       const catLabel = getCategoriaLabel(p.catLabel);
@@ -253,16 +221,13 @@ const Plantillas = (() => {
         </div>
       `;
     }).join('');
-
     cont.querySelectorAll('.plantilla').forEach(card => {
       const id = card.dataset.id;
       const esCustom = card.dataset.custom === '1';
-
       card.querySelector('[data-accion="copiar"]').addEventListener('click', () => {
         const p = visibles.find(x => x.id === id);
         if (p) copiar(p);
       });
-
       if (esCustom) {
         const btnEditar = card.querySelector('[data-accion="editar"]');
         const btnBorrar = card.querySelector('[data-accion="borrar"]');
@@ -278,11 +243,9 @@ const Plantillas = (() => {
     const inputTitulo = document.getElementById('pl-modal-titulo');
     const inputCat = document.getElementById('pl-modal-categoria');
     const inputTexto = document.getElementById('pl-modal-texto');
-
     inputCat.innerHTML = CATEGORIAS_MODAL.map(c =>
       `<option value="${c.id}">${escapeHtml(c.label)}</option>`
     ).join('');
-
     if (id) {
       const p = getPersonalizadas().find(x => x.id === id);
       if (!p) return;
@@ -298,7 +261,6 @@ const Plantillas = (() => {
       inputCat.value = 'otros';
       inputTexto.value = '';
     }
-
     modal.hidden = false;
     modal.setAttribute('aria-hidden', 'false');
     document.body.classList.add('no-scroll');
@@ -324,12 +286,9 @@ const Plantillas = (() => {
     const titulo = document.getElementById('pl-modal-titulo').value.trim();
     const cat = document.getElementById('pl-modal-categoria').value;
     const texto = document.getElementById('pl-modal-texto').value.trim();
-
     if (!titulo) { toast('Poné un título', 'error'); return; }
     if (!texto) { toast('Escribí el mensaje', 'error'); return; }
-
     const lista = getPersonalizadas();
-
     if (editandoId) {
       const i = lista.findIndex(p => p.id === editandoId);
       if (i >= 0) {
@@ -340,14 +299,11 @@ const Plantillas = (() => {
     } else {
       lista.unshift({
         id: 'custom-' + Date.now() + '-' + Math.random().toString(36).slice(2, 6),
-        titulo,
-        cat,
-        texto,
+        titulo, cat, texto
       });
       setPersonalizadas(lista);
       toast('Plantilla creada');
     }
-
     cerrarModal();
     categoriaActiva = 'personalizadas';
     renderTabs();

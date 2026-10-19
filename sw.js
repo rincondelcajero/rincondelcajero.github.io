@@ -1,4 +1,4 @@
-const CACHE_NAME = 'trc-v7';
+const CACHE_NAME = 'trc-v8';
 
 const ASSETS = [
   './',
@@ -49,11 +49,9 @@ self.addEventListener('activate', (event) => {
 self.addEventListener('fetch', (event) => {
   const req = event.request;
   if (req.method !== 'GET') return;
-
   let url;
   try { url = new URL(req.url); } catch { return; }
   if (url.origin !== self.location.origin) return;
-
   const accept = req.headers.get('accept') || '';
   if (req.mode === 'navigate' || accept.includes('text/html')) {
     event.respondWith(
@@ -69,7 +67,6 @@ self.addEventListener('fetch', (event) => {
     );
     return;
   }
-
   event.respondWith(
     caches.match(req).then((cached) => {
       if (cached) return cached;

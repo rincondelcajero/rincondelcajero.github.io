@@ -108,16 +108,10 @@ const TRC = (() => {
     function burst(count = 140) {
       if (!canvas) { if (!init()) return; }
       if (running) return;
-
       const w = window.innerWidth;
       const h = window.innerHeight;
-      const colors = [
-        '#c9a961', '#d9bd7a', '#4ade80', '#3b82f6',
-        '#ef4444', '#a855f7', '#f97316', '#ec4899', '#14b8a6'
-      ];
-
+      const colors = ['#c9a961', '#d9bd7a', '#4ade80', '#3b82f6', '#ef4444', '#a855f7', '#f97316', '#ec4899', '#14b8a6'];
       const total = w < 480 ? Math.round(count * 0.7) : count;
-
       particles = [];
       for (let i = 0; i < total; i++) {
         particles.push({
@@ -134,7 +128,6 @@ const TRC = (() => {
           sway: Math.random() * Math.PI * 2
         });
       }
-
       running = true;
       canvas.style.display = 'block';
       requestAnimationFrame(loop);
@@ -145,7 +138,6 @@ const TRC = (() => {
       const w = window.innerWidth;
       const h = window.innerHeight;
       ctx.clearRect(0, 0, w, h);
-
       let alive = 0;
       for (const p of particles) {
         p.sway += 0.05;
@@ -155,7 +147,6 @@ const TRC = (() => {
         p.vx *= 0.99;
         p.rotation += p.vr;
         p.life -= 0.0035;
-
         if (p.life > 0 && p.y < h + 50) {
           alive++;
           ctx.save();
@@ -173,7 +164,6 @@ const TRC = (() => {
           ctx.restore();
         }
       }
-
       if (alive > 0) {
         requestAnimationFrame(loop);
       } else {

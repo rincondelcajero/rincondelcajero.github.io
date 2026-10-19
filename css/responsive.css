@@ -14,69 +14,45 @@
   .logo { font-size: var(--fs-sm); }
   .logo-mark { width: 22px; height: 22px; }
 
-  .main {
-    padding: var(--space-md) 0 calc(var(--bottom-nav-h) + 24px + env(safe-area-inset-bottom));
-  }
-  .footer {
-    padding-bottom: calc(var(--bottom-nav-h) + 16px + env(safe-area-inset-bottom));
-  }
+  .main { padding: var(--space-md) 0 calc(var(--bottom-nav-h) + 24px + env(safe-area-inset-bottom)); }
+  .footer { padding-bottom: calc(var(--bottom-nav-h) + 16px + env(safe-area-inset-bottom)); }
 
   input[type="text"],
   input[type="number"],
   input[type="search"],
   input[type="tel"],
   input[type="email"],
+  input[type="url"],
+  input[type="password"],
+  input[type="date"],
   textarea,
   select {
     font-size: 16px;
   }
 
-  .toast {
-    bottom: calc(var(--bottom-nav-h) + 14px + env(safe-area-inset-bottom));
-  }
+  .toast { bottom: calc(var(--bottom-nav-h) + 14px + env(safe-area-inset-bottom)); }
 
-  .hero {
-    padding: 28px 0 32px;
-    margin-bottom: var(--space-md);
-  }
+  .hero { padding: 28px 0 32px; margin-bottom: var(--space-md); }
   .hero h1 { font-size: clamp(1.5rem, 6vw, 2rem); }
-  .hero-actions {
-    flex-direction: column;
-    margin-top: 22px;
-  }
+  .hero-actions { flex-direction: column; margin-top: 22px; }
   .hero-actions .btn { width: 100%; }
 
-  .panel-head {
-    flex-direction: column;
-    align-items: stretch;
-    gap: 10px;
-  }
-  .panel-head h3 {
-    justify-content: space-between;
-    width: 100%;
-  }
-  .panel-head .row-btns,
-  .panel-head > .btn {
-    width: 100%;
-  }
-  .panel-head .row-btns .btn {
-    flex: 1;
-    min-width: 0;
-  }
+  .panel-head { flex-direction: column; align-items: stretch; gap: 10px; }
+  .panel-head h3 { justify-content: space-between; width: 100%; }
+  .panel-head .row-btns, .panel-head > .btn { width: 100%; }
+  .panel-head .row-btns .btn { flex: 1; min-width: 0; }
 
   .hist-fecha { display: none; }
   .btn-lg { padding: 15px; font-size: var(--fs-base); }
+
+  .qr-tipos { overscroll-behavior-x: contain; -webkit-overflow-scrolling: touch; }
+  .qr-preview-container { min-height: 240px; padding: 16px; }
 }
 
 @media (max-width: 560px) {
   .ruleta-canvas-container { max-width: 300px; }
 
-  .resultado-item {
-    flex-direction: column;
-    align-items: flex-start;
-    gap: 4px;
-    padding: 14px;
-  }
+  .resultado-item { flex-direction: column; align-items: flex-start; gap: 4px; padding: 14px; }
   .resultado-valor { font-size: var(--fs-lg); }
 
   .tabla th, .tabla td { padding: 10px 12px; font-size: var(--fs-xs); }
@@ -86,13 +62,9 @@
   .panel { padding: 14px; border-radius: var(--radius-sm); }
 
   .empty-state { padding: 24px 16px; }
-
   .celebration-name { font-size: clamp(1.5rem, 8vw, 2.25rem); }
 
-  .modal {
-    padding: 0;
-    align-items: flex-end;
-  }
+  .modal { padding: 0; align-items: flex-end; }
   .modal-content {
     max-width: 100%;
     max-height: 92dvh;
@@ -100,30 +72,15 @@
     border-bottom: none;
     transform: translateY(20px);
   }
-  .modal.show .modal-content {
-    transform: translateY(0);
-  }
-  .modal-head,
-  .modal-body,
-  .modal-foot {
-    padding-left: 16px;
-    padding-right: 16px;
-  }
-  .modal-foot {
-    padding-bottom: calc(14px + env(safe-area-inset-bottom));
-  }
+  .modal.show .modal-content { transform: translateY(0); }
+  .modal-head, .modal-body, .modal-foot { padding-left: 16px; padding-right: 16px; }
+  .modal-foot { padding-bottom: calc(14px + env(safe-area-inset-bottom)); }
 
-  .servicio-hero {
-    flex-direction: column;
-    gap: 14px;
-  }
-  .servicio-cta {
-    padding: var(--space-md) var(--space-sm);
-  }
+  .servicio-hero { flex-direction: column; gap: 14px; }
+  .servicio-cta { padding: var(--space-md) var(--space-sm); }
 
   .qr-opciones { grid-template-columns: 1fr; }
   .qr-preview-container { min-height: 200px; padding: 12px; }
-  .qr-preview canvas { max-height: 260px; width: auto; }
   .qr-acciones .btn { min-width: 100%; }
   .qr-hist-fecha { display: none; }
 }
@@ -132,7 +89,6 @@
   .bottom-nav-item { padding: 6px 2px; }
   .bottom-nav-item span { font-size: 9px; }
   .bottom-nav-item svg { width: 20px; height: 20px; }
-
   .qr-tipo { padding: 7px 12px; font-size: var(--fs-xs); min-height: 34px; }
 }
 

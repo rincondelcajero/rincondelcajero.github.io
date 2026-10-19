@@ -3,7 +3,6 @@ const PWAInstall = (() => {
   const KEY_INSTALADO  = 'pwa:instalado';
   const DIAS_ESPERA    = 14;
   const DELAY_MS       = 5000;
-
   let deferredPrompt = null;
   let bannerEl = null;
   let timer = null;
@@ -12,29 +11,17 @@ const PWAInstall = (() => {
 
   function init() {
     if (inicializado) return;
-    if (yaInstalado()) {
-      console.info('[PWA] App ya instalada, no se muestra banner.');
-      return;
-    }
-    if (fueDescartado()) {
-      console.info('[PWA] Banner descartado recientemente, no se muestra.');
-      return;
-    }
-
+    if (yaInstalado()) return;
+    if (fueDescartado()) return;
     inicializado = true;
     plataforma = detectarPlataforma();
-    console.info('[PWA] Plataforma detectada:', plataforma);
-
     window.addEventListener('beforeinstallprompt', (e) => {
       e.preventDefault();
       deferredPrompt = e;
-      console.info('[PWA] beforeinstallprompt capturado.');
       if (bannerEl) actualizarBanner();
     });
-
     window.addEventListener('appinstalled', () => {
       TRC.storage.set(KEY_INSTALADO, true);
-      console.info('[PWA] App instalada por el usuario.');
       ocultarBanner();
       setTimeout(() => {
         if (bannerEl && bannerEl.parentNode) {
@@ -43,7 +30,6 @@ const PWAInstall = (() => {
         }
       }, 500);
     });
-
     if (document.readyState === 'loading') {
       document.addEventListener('DOMContentLoaded', arrancar);
     } else {
@@ -74,7 +60,6 @@ const PWAInstall = (() => {
 
   function crearBanner() {
     if (bannerEl) return;
-
     const wrap = document.createElement('div');
     wrap.id = 'pwa-install-banner';
     wrap.className = 'pwa-banner';
@@ -84,9 +69,7 @@ const PWAInstall = (() => {
     wrap.innerHTML = `
       <div class="pwa-banner-icon" aria-hidden="true">
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
-          <path d="M12 3v12"/>
-          <path d="M7 10l5 5 5-5"/>
-          <path d="M5 21h14"/>
+          <path d="M12 3v12"/><path d="M7 10l5 5 5-5"/><path d="M5 21h14"/>
         </svg>
       </div>
       <div class="pwa-banner-texto">
@@ -100,10 +83,8 @@ const PWAInstall = (() => {
         </svg>
       </button>
     `;
-
     document.body.appendChild(wrap);
     bannerEl = wrap;
-
     wrap.addEventListener('click', (e) => {
       const accion = e.target.closest('[data-accion]');
       if (!accion) return;
@@ -123,11 +104,9 @@ const PWAInstall = (() => {
     if (fueDescartado()) return;
     if (yaInstalado()) return;
     if (!bannerEl.hidden) return;
-
     actualizarBanner();
     bannerEl.hidden = false;
     requestAnimationFrame(() => bannerEl.classList.add('show'));
-    console.info('[PWA] Banner mostrado. deferredPrompt:', !!deferredPrompt);
   }
 
   function actualizarBanner() {
@@ -136,7 +115,6 @@ const PWAInstall = (() => {
     const sub    = bannerEl.querySelector('.pwa-banner-sub');
     const btn    = bannerEl.querySelector('.pwa-banner-btn');
     if (!titulo || !sub || !btn) return;
-
     if (deferredPrompt) {
       titulo.textContent = 'Instalá El Rincón del Cajero';
       sub.textContent    = 'Accedé más rápido desde tu inicio.';
@@ -144,7 +122,6 @@ const PWAInstall = (() => {
       btn.textContent    = 'Instalar';
       return;
     }
-
     switch (plataforma) {
       case 'ios-safari':
         titulo.textContent = 'Instalá la app en tu iPhone';
@@ -196,7 +173,6 @@ const PWAInstall = (() => {
     try {
       deferredPrompt.prompt();
       const { outcome } = await deferredPrompt.userChoice;
-      console.info('[PWA] Resultado del prompt:', outcome);
       if (outcome === 'accepted') {
         TRC.storage.set(KEY_INSTALADO, true);
         TRC.toast('¡Listo! Ya podés abrir la app desde tu inicio.');

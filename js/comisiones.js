@@ -8,23 +8,19 @@ const Comisiones = (() => {
     if (inicializado) return;
     const btn = document.getElementById('com-calcular');
     if (!btn) return;
-
     const ultPorc = storage.get(KEY_PORC, null);
     if (ultPorc !== null) {
       document.getElementById('com-porcentaje').value = ultPorc;
     }
-
     btn.addEventListener('click', calcular);
     document.getElementById('com-limpiar').addEventListener('click', limpiar);
     document.getElementById('com-exportar').addEventListener('click', exportar);
     document.getElementById('com-copiar').addEventListener('click', copiarResultado);
-
     ['com-caja', 'com-porcentaje', 'com-administrador'].forEach(id => {
       document.getElementById(id).addEventListener('keydown', e => {
         if (e.key === 'Enter') { e.preventDefault(); calcular(); }
       });
     });
-
     render();
     inicializado = true;
   }
@@ -33,7 +29,6 @@ const Comisiones = (() => {
     const caja = parseFloat(document.getElementById('com-caja').value);
     const porcentaje = parseFloat(document.getElementById('com-porcentaje').value);
     const administrador = document.getElementById('com-administrador').value.trim();
-
     if (isNaN(caja) || caja <= 0) {
       toast('Ingresá una caja válida', 'error');
       document.getElementById('com-caja').focus();
@@ -44,18 +39,14 @@ const Comisiones = (() => {
       document.getElementById('com-porcentaje').focus();
       return;
     }
-
     storage.set(KEY_PORC, porcentaje);
-
-    const miGanancia = caja * (porcentaje / 100);
-    const alAdministrador = caja - miGanancia;
-
+    const miGanancia = Math.round(caja * (porcentaje / 100) * 100) / 100;
+    const alAdministrador = Math.round((caja - miGanancia) * 100) / 100;
     document.getElementById('com-al-admin').textContent = '$' + fmtMoneda(alAdministrador);
     document.getElementById('com-ganancia').textContent = '$' + fmtMoneda(miGanancia);
     document.getElementById('com-resultado').hidden = false;
     document.getElementById('com-vacio').hidden = true;
     document.getElementById('com-copiar').hidden = false;
-
     const historial = storage.get(KEY, []);
     historial.unshift({
       fecha: fmtFecha(),
@@ -68,7 +59,6 @@ const Comisiones = (() => {
     storage.set(KEY, historial.slice(0, 100));
     render();
     toast('Cierre guardado');
-
     if (window.matchMedia('(max-width: 860px)').matches) {
       const box = document.getElementById('com-resultado');
       box.scrollIntoView({ behavior: 'smooth', block: 'center' });
@@ -124,9 +114,7 @@ const Comisiones = (() => {
     const vacio = document.getElementById('com-tabla-vacio');
     const tabla = document.getElementById('com-tabla');
     const counter = document.getElementById('com-counter');
-
     if (counter) counter.textContent = historial.length;
-
     if (!historial.length) {
       tbody.innerHTML = '';
       tabla.hidden = true;
@@ -135,7 +123,6 @@ const Comisiones = (() => {
     }
     tabla.hidden = false;
     vacio.hidden = true;
-
     tbody.innerHTML = historial.map(h => `
       <tr>
         <td>${escapeHtml(h.fecha)}</td>

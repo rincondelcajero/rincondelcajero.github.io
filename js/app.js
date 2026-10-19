@@ -27,10 +27,8 @@
         l.classList.toggle('active', l.dataset.nav === id)
       );
       cerrarMenu();
-
       const isMobile = window.matchMedia('(max-width: 860px)').matches;
       window.scrollTo({ top: 0, behavior: isMobile ? 'auto' : 'smooth' });
-
       document.dispatchEvent(new CustomEvent('trc:section-shown', { detail: id }));
     }
 
@@ -53,12 +51,10 @@
         toggle.setAttribute('aria-expanded', String(abierto));
       });
     }
-
     document.addEventListener('click', e => {
       if (!nav || !nav.classList.contains('open')) return;
       if (!nav.contains(e.target) && toggle && !toggle.contains(e.target)) cerrarMenu();
     });
-
     document.addEventListener('keydown', e => {
       if (e.key === 'Escape' && nav && nav.classList.contains('open')) cerrarMenu();
     });
@@ -109,10 +105,34 @@
       location.hostname === 'localhost' ||
       location.hostname === '127.0.0.1';
     if (!esSeguro) return;
+
+    const habiaController = !!navigator.serviceWorker.controller;
+    let recargando = false;
+
+    navigator.serviceWorker.addEventListener('controllerchange', () => {
+      if (!habiaController) return;
+      if (recargando) return;
+      recargando = true;
+      window.location.reload();
+    });
+
     window.addEventListener('load', () => {
-      navigator.serviceWorker.register('sw.js').catch((err) => {
-        console.warn('[PWA] Error SW:', err);
-      });
+      navigator.serviceWorker.register('sw.js')
+        .then((reg) => {
+          reg.update().catch(() => {});
+          setInterval(() => reg.update().catch(() => {}), 60 * 60 * 1000);
+        })
+        .catch((err) => {
+          console.warn('[PWA] Error SW:', err);
+        });
+    });
+
+    document.addEventListener('visibilitychange', () => {
+      if (document.visibilityState === 'visible' && navigator.serviceWorker.controller) {
+        navigator.serviceWorker.ready
+          .then((reg) => reg.update().catch(() => {}))
+          .catch(() => {});
+      }
     });
   }
 

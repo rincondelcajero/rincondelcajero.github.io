@@ -1,13 +1,7 @@
 const Ruleta = (() => {
   const { storage, toast, escapeHtml, fmtFecha, indiceAleatorio, Confetti, vibrar } = TRC;
-
   const LIMITE = 100;
-
-  const COLORES = [
-    '#c9a961','#22c55e','#3b82f6','#ef4444',
-    '#a855f7','#f97316','#14b8a6','#ec4899',
-    '#84cc16','#06b6d4','#f43f5e','#8b5cf6'
-  ];
+  const COLORES = ['#c9a961','#22c55e','#3b82f6','#ef4444','#a855f7','#f97316','#14b8a6','#ec4899','#84cc16','#06b6d4','#f43f5e','#8b5cf6'];
   const HIST_KEY = 'ruleta:historial';
   const COUNTER_KEY = 'ruleta:counter';
   const PARTICIPANTES_KEY = 'ruleta:participantes';
@@ -18,11 +12,9 @@ const Ruleta = (() => {
   let rotacion = 0;
   let girando = false;
   let inicializado = false;
-
   let highlightIdx = -1;
   let highlightStart = 0;
   let highlightRAF = null;
-
   let guardarTimer = null;
   let avisoLimiteDado = false;
 
@@ -30,7 +22,6 @@ const Ruleta = (() => {
     if (inicializado) return;
     canvas = document.getElementById('ruleta-canvas');
     if (!canvas) return;
-
     ctx = canvas.getContext('2d');
     container = document.getElementById('ruleta-canvas-container');
     textarea = document.getElementById('ruleta-participantes');
@@ -119,7 +110,6 @@ const Ruleta = (() => {
 
   function sincronizar() {
     const todas = textarea.value.split('\n').map(l => l.trim()).filter(Boolean);
-
     if (todas.length > LIMITE) {
       const recortadas = todas.slice(0, LIMITE);
       participantes = recortadas;
@@ -133,12 +123,10 @@ const Ruleta = (() => {
       participantes = todas;
       if (todas.length < LIMITE) avisoLimiteDado = false;
     }
-
     if (contadorPartEl) {
       contadorPartEl.textContent = `${participantes.length} / ${LIMITE}`;
       contadorPartEl.style.color = participantes.length >= LIMITE ? 'var(--danger)' : '';
     }
-
     if (!girando) dibujar();
   }
 
@@ -147,15 +135,12 @@ const Ruleta = (() => {
     const dpr = Math.min(window.devicePixelRatio || 1, 2);
     const size = Math.round(container.clientWidth || canvas.clientWidth || 400);
     if (size <= 0) return;
-
     canvas.width = size * dpr;
     canvas.height = size * dpr;
     ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
-
     const cx = size / 2;
     const cy = size / 2;
     const radio = size / 2 - 20;
-
     ctx.clearRect(0, 0, size, size);
 
     if (participantes.length === 0) {
@@ -166,7 +151,6 @@ const Ruleta = (() => {
       ctx.strokeStyle = '#24292f';
       ctx.lineWidth = 1;
       ctx.stroke();
-
       ctx.fillStyle = '#6d7581';
       ctx.font = '500 14px system-ui, sans-serif';
       ctx.textAlign = 'center';
@@ -178,7 +162,6 @@ const Ruleta = (() => {
 
     const n = participantes.length;
     const step = (Math.PI * 2) / n;
-
     let fontSize;
     if (n <= 6)       fontSize = 15;
     else if (n <= 12) fontSize = 14;
@@ -196,7 +179,6 @@ const Ruleta = (() => {
     for (let i = 0; i < n; i++) {
       const start = i * step + rotacion;
       const end = start + step;
-
       ctx.beginPath();
       ctx.moveTo(cx, cy);
       ctx.arc(cx, cy, radio, start, end);
@@ -206,39 +188,27 @@ const Ruleta = (() => {
       ctx.strokeStyle = 'rgba(0,0,0,.25)';
       ctx.lineWidth = 1;
       ctx.stroke();
-
       ctx.save();
       ctx.translate(cx, cy);
       ctx.rotate(start + step / 2);
       ctx.textAlign = 'right';
       ctx.textBaseline = 'middle';
-
       const nombre = participantes[i];
       let txt;
-      if (nombre.length <= maxChars) {
-        txt = nombre;
-      } else if (maxChars <= 1) {
-        txt = nombre[0].toUpperCase();
-      } else if (maxChars <= 4) {
-        txt = nombre.slice(0, maxChars);
-      } else {
-        txt = nombre.slice(0, maxChars - 1) + '…';
-      }
-
+      if (nombre.length <= maxChars) txt = nombre;
+      else if (maxChars <= 1) txt = nombre[0].toUpperCase();
+      else if (maxChars <= 4) txt = nombre.slice(0, maxChars);
+      else txt = nombre.slice(0, maxChars - 1) + '…';
       ctx.font = `700 ${fontSize}px system-ui, -apple-system, sans-serif`;
-
       ctx.shadowColor = 'rgba(0,0,0,.55)';
       ctx.shadowBlur = 2;
       ctx.shadowOffsetX = 0;
       ctx.shadowOffsetY = 1;
-
       ctx.fillStyle = '#ffffff';
       ctx.fillText(txt, radio - 10, 0);
-
       ctx.shadowColor = 'transparent';
       ctx.shadowBlur = 0;
       ctx.shadowOffsetY = 0;
-
       ctx.restore();
     }
 
@@ -247,7 +217,6 @@ const Ruleta = (() => {
       const alpha = 0.16 + Math.abs(Math.sin(t * 5)) * 0.18;
       const start = highlightIdx * step + rotacion;
       const end = start + step;
-
       ctx.beginPath();
       ctx.moveTo(cx, cy);
       ctx.arc(cx, cy, radio, start, end);
@@ -267,12 +236,10 @@ const Ruleta = (() => {
     ctx.strokeStyle = '#c9a961';
     ctx.lineWidth = 2;
     ctx.stroke();
-
     ctx.beginPath();
     ctx.arc(cx, cy, Math.max(3, rCentro * 0.18), 0, Math.PI * 2);
     ctx.fillStyle = '#c9a961';
     ctx.fill();
-
     dibujarPuntero(cx, cy, radio);
   }
 
@@ -294,9 +261,7 @@ const Ruleta = (() => {
     highlightIdx = idx;
     highlightStart = Date.now();
     const endTime = Date.now() + duration;
-
     if (highlightRAF) cancelAnimationFrame(highlightRAF);
-
     function tick() {
       if (Date.now() >= endTime) {
         highlightIdx = -1;
@@ -320,7 +285,6 @@ const Ruleta = (() => {
 
   function girar() {
     if (girando) return;
-
     const todas = textarea.value.split('\n').map(l => l.trim()).filter(Boolean);
     if (todas.length > LIMITE) {
       toast(`Máximo ${LIMITE} participantes`, 'error');
@@ -328,41 +292,33 @@ const Ruleta = (() => {
       return;
     }
     participantes = todas;
-
     if (participantes.length < 2) {
       resultadoEl.textContent = 'Necesitás al menos 2 participantes.';
       resultadoEl.classList.remove('ganador');
       toast('Necesitás al menos 2 participantes', 'error');
       return;
     }
-
     girando = true;
     setControlesBloqueados(true);
     clearHighlight();
     resultadoEl.classList.remove('ganador');
     resultadoEl.textContent = 'Girando…';
     vibrar(10);
-
     const n = participantes.length;
     const step = (Math.PI * 2) / n;
     const idxGanador = indiceAleatorio(n);
-
     const centroSector = (idxGanador + 0.5) * step;
     const rotFinalBase = -Math.PI / 2 - centroSector;
-
     const vueltas = 6 + Math.floor(Math.random() * 3);
     const jitter = (Math.random() - 0.5) * step * 0.7;
-
     const rotActualNorm = ((rotacion % (Math.PI * 2)) + Math.PI * 2) % (Math.PI * 2);
     const rotFinalNorm = ((rotFinalBase % (Math.PI * 2)) + Math.PI * 2) % (Math.PI * 2);
     let delta = rotFinalNorm - rotActualNorm;
     if (delta < 0) delta += Math.PI * 2;
-
     const rotInicio = rotacion;
     const rotDelta = delta + vueltas * Math.PI * 2 + jitter;
     const duracion = 4500;
     const inicio = performance.now();
-
     function animar(now) {
       const p = Math.min((now - inicio) / duracion, 1);
       const ease = 1 - Math.pow(1 - p, 4);
@@ -381,14 +337,11 @@ const Ruleta = (() => {
 
   function finalizarGiro(idx) {
     const ganador = participantes[idx];
-
     resultadoEl.textContent = `Ganó ${ganador}`;
     resultadoEl.classList.add('ganador');
-
     const numero = guardarEnHistorial(ganador);
     showCelebration(ganador, numero);
     vibrar([20, 40, 20]);
-
     if (chkQuitar.checked) {
       const nuevos = participantes.filter((_, i) => i !== idx);
       textarea.value = nuevos.join('\n');
@@ -403,7 +356,6 @@ const Ruleta = (() => {
     } else {
       startHighlight(idx, 3400);
     }
-
     girando = false;
     setControlesBloqueados(false);
   }
@@ -413,21 +365,16 @@ const Ruleta = (() => {
     const nameEl = document.getElementById('celebration-name');
     const numEl = document.getElementById('celebration-num');
     if (!el || !nameEl || !numEl) return;
-
     clearTimeout(el._timer);
     clearTimeout(el._timer2);
-
     nameEl.textContent = nombre;
     numEl.textContent = `Sorteo #${numero}`;
-
     el.hidden = false;
     el.setAttribute('aria-hidden', 'false');
     el.classList.remove('show', 'closing');
     void el.offsetWidth;
     el.classList.add('show');
-
     Confetti.burst(140);
-
     el._timer = setTimeout(() => cerrarCelebracion(el), 3400);
   }
 
@@ -445,7 +392,6 @@ const Ruleta = (() => {
   function cargarHistorial() {
     const historial = storage.get(HIST_KEY, []);
     if (counterEl) counterEl.textContent = historial.length;
-
     if (!historial.length) {
       historialEl.innerHTML = `
         <li class="empty-state" style="border:1px dashed var(--border); list-style:none; padding: 24px;">
@@ -453,7 +399,6 @@ const Ruleta = (() => {
         </li>`;
       return;
     }
-
     historialEl.innerHTML = historial.map((h, i) => {
       const num = h.numero || (historial.length - i);
       return `
@@ -470,7 +415,6 @@ const Ruleta = (() => {
     const historial = storage.get(HIST_KEY, []);
     const numero = (storage.get(COUNTER_KEY, 0) || 0) + 1;
     storage.set(COUNTER_KEY, numero);
-
     historial.unshift({ numero, nombre, fecha: fmtFecha() });
     storage.set(HIST_KEY, historial.slice(0, 100));
     cargarHistorial();

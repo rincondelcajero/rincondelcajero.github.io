@@ -2,35 +2,31 @@ const QR = (() => {
   const { storage, toast, escapeHtml, fmtFecha, vibrar, descargarArchivo } = TRC;
   const KEY_HIST = 'qr:historial';
   const LIMITE_HIST = 20;
-
   let tipoActivo = 'texto';
   let ultimo = null;
   let inicializado = false;
+  let intentos = 0;
 
   function init() {
     if (inicializado) return;
-    inicializado = true;
-
-    console.log('[QR] init()');
-
     if (typeof qrcode !== 'function') {
-      console.error('[QR] qrcode NO definido. Falta js/qrcode.js');
-      mostrarError('Error: <code>js/qrcode.js</code> no está cargado. Asegurate de que el archivo exista y se cargue ANTES de <code>js/qr.js</code>.');
+      intentos++;
+      if (intentos < 20) {
+        setTimeout(init, 500);
+        return;
+      }
+      mostrarError('Error: la librería QR no cargó. Recargá la página.');
       return;
     }
-    console.log('[QR] qrcode OK');
-
+    inicializado = true;
     try {
       if (qrcode.stringToBytesFuncs && qrcode.stringToBytesFuncs['UTF-8']) {
         qrcode.stringToBytes = qrcode.stringToBytesFuncs['UTF-8'];
-        console.log('[QR] UTF-8 activado');
       }
     } catch (e) {
       console.warn('[QR] UTF-8:', e);
     }
-
     const tabs = document.querySelectorAll('#qr-tipos .qr-tipo');
-    console.log('[QR] Tabs encontrados:', tabs.length);
     tabs.forEach(tab => {
       tab.addEventListener('click', () => {
         if (tab.dataset.tipo === tipoActivo) return;
@@ -44,35 +40,32 @@ const QR = (() => {
         vibrar(6);
       });
     });
-
     const btnGen = document.getElementById('qr-generar');
-    console.log('[QR] Botón generar:', btnGen ? 'encontrado' : 'NO ENCONTRADO');
     if (btnGen) {
       btnGen.addEventListener('click', (e) => {
         e.preventDefault();
-        console.log('[QR] Click en Generar');
         generar();
       });
     }
-
     const btnPNG = document.getElementById('qr-descargar-png');
     const btnSVG = document.getElementById('qr-descargar-svg');
     const btnCopiar = document.getElementById('qr-copiar');
     const btnLimpiar = document.getElementById('qr-limpiar-historial');
-
     if (btnPNG) btnPNG.addEventListener('click', descargarPNG);
     if (btnSVG) btnSVG.addEventListener('click', descargarSVG);
     if (btnCopiar) btnCopiar.addEventListener('click', copiarContenido);
     if (btnLimpiar) btnLimpiar.addEventListener('click', limpiarHistorial);
-
-    // Solo renderizar si el form está vacío (para no perder el textarea del HTML)
+    document.addEventListener('keydown', e => {
+      if (e.key === 'Enter' && (e.ctrlKey || e.metaKey)) {
+        const sec = document.querySelector('[data-section="qr"]');
+        if (sec && !sec.hidden) { e.preventDefault(); generar(); }
+      }
+    });
     const form = document.getElementById('qr-form');
     if (form && form.children.length === 0) {
       renderFormulario();
     }
-
     cargarHistorial();
-    console.log('[QR] Listo para usar');
   }
 
   function mostrarError(msg) {
@@ -86,9 +79,7 @@ const QR = (() => {
   function renderFormulario() {
     const form = document.getElementById('qr-form');
     if (!form) return;
-
     let html = '';
-
     if (tipoActivo === 'texto' || tipoActivo === 'url') {
       html =
         '<div class="qr-field">' +
@@ -100,7 +91,7 @@ const QR = (() => {
       html =
         '<div class="qr-field">' +
         '<label for="qr-telefono">Teléfono</label>' +
-        '<input type="tel" id="qr-telefono" placeholder="5493765168963" autocomplete="off">' +
+        '<input type="tel" id="qr-telefono" placeholder="5493765168963" inputmode="tel" autocomplete="off">' +
         '<p class="qr-hint">Incluí el código de país, sin + ni espacios. Ej: 5493765168963.</p>' +
         '</div>' +
         '<div class="qr-field">' +
@@ -115,7 +106,7 @@ const QR = (() => {
         '</div>' +
         '<div class="qr-field">' +
         '<label for="qr-cbu">CBU / CVU</label>' +
-        '<input type="text" id="qr-cbu" placeholder="0000003100012345678901" maxlength="30" autocomplete="off">' +
+        '<input type="text" id="qr-cbu" placeholder="0000003100012345678901" maxlength="30" inputmode="numeric" autocomplete="off">' +
         '<p class="qr-hint" id="qr-cbu-hint"></p>' +
         '</div>' +
         '<div class="qr-field">' +
@@ -152,17 +143,17 @@ const QR = (() => {
         '</div>' +
         '<div class="qr-field">' +
         '<label for="qr-tel-contacto">Teléfono</label>' +
-        '<input type="tel" id="qr-tel-contacto" placeholder="+5493765168963" autocomplete="off">' +
+        '<input type="tel" id="qr-tel-contacto" placeholder="+5493765168963" inputmode="tel" autocomplete="off">' +
         '</div>' +
         '<div class="qr-field">' +
         '<label for="qr-email-contacto">Email</label>' +
-        '<input type="email" id="qr-email-contacto" placeholder="juan@ejemplo.com" autocomplete="off">' +
+        '<input type="email" id="qr-email-contacto" placeholder="juan@ejemplo.com" inputmode="email" autocomplete="off">' +
         '</div>';
     } else if (tipoActivo === 'email') {
       html =
         '<div class="qr-field">' +
         '<label for="qr-email-dest">Email destino</label>' +
-        '<input type="email" id="qr-email-dest" placeholder="destinatario@ejemplo.com" autocomplete="off">' +
+        '<input type="email" id="qr-email-dest" placeholder="destinatario@ejemplo.com" inputmode="email" autocomplete="off">' +
         '</div>' +
         '<div class="qr-field">' +
         '<label for="qr-email-asunto">Asunto (opcional)</label>' +
@@ -172,12 +163,10 @@ const QR = (() => {
       html =
         '<div class="qr-field">' +
         '<label for="qr-tel">Teléfono</label>' +
-        '<input type="tel" id="qr-tel" placeholder="+5493765168963" autocomplete="off">' +
+        '<input type="tel" id="qr-tel" placeholder="+5493765168963" inputmode="tel" autocomplete="off">' +
         '</div>';
     }
-
     form.innerHTML = html;
-
     const cbuInput = document.getElementById('qr-cbu');
     if (cbuInput) {
       cbuInput.addEventListener('input', () => actualizarValidacionCBU(cbuInput.value));
@@ -195,7 +184,6 @@ const QR = (() => {
       if (!tieneEsquema && pareceDominio) content = 'https://' + t;
       return { ok: true, content, resumen: t.slice(0, 50) };
     }
-
     if (tipoActivo === 'whatsapp') {
       const telEl = document.getElementById('qr-telefono');
       const tel = (telEl ? telEl.value : '').replace(/\D/g, '');
@@ -205,7 +193,6 @@ const QR = (() => {
       const content = 'https://wa.me/' + tel + (msg ? '?text=' + encodeURIComponent(msg) : '');
       return { ok: true, content, resumen: 'WhatsApp +' + tel };
     }
-
     if (tipoActivo === 'cbu') {
       const titularEl = document.getElementById('qr-titular');
       const cbuEl = document.getElementById('qr-cbu');
@@ -227,7 +214,6 @@ const QR = (() => {
       if (banco) lineas.push('Banco: ' + banco);
       return { ok: true, content: lineas.join('\n'), resumen: (alias || cbu).slice(0, 50) };
     }
-
     if (tipoActivo === 'wifi') {
       const ssidEl = document.getElementById('qr-ssid');
       const passEl = document.getElementById('qr-password');
@@ -243,7 +229,6 @@ const QR = (() => {
       content += ';';
       return { ok: true, content, resumen: 'WiFi: ' + ssid };
     }
-
     if (tipoActivo === 'contacto') {
       const nombreEl = document.getElementById('qr-nombre');
       const nombre = nombreEl ? nombreEl.value.trim() : '';
@@ -258,7 +243,6 @@ const QR = (() => {
       lineas.push('END:VCARD');
       return { ok: true, content: lineas.join('\n'), resumen: nombre };
     }
-
     if (tipoActivo === 'email') {
       const destEl = document.getElementById('qr-email-dest');
       const dest = destEl ? destEl.value.trim() : '';
@@ -271,14 +255,12 @@ const QR = (() => {
       const content = 'mailto:' + dest + (params.length ? '?' + params.join('&') : '');
       return { ok: true, content, resumen: 'Email: ' + dest };
     }
-
     if (tipoActivo === 'telefono') {
       const el = document.getElementById('qr-tel');
       const tel = (el ? el.value : '').replace(/\D/g, '');
       if (tel.length < 8) return { ok: false, msg: 'Teléfono inválido' };
       return { ok: true, content: 'tel:+' + tel, resumen: 'Tel: +' + tel };
     }
-
     return { ok: false, msg: 'Tipo desconocido' };
   }
 
@@ -296,14 +278,11 @@ const QR = (() => {
 
   function generar() {
     const r = obtenerContenido();
-    console.log('[QR] Contenido:', r);
     if (!r.ok) { toast(r.msg, 'error'); return; }
-
     const sizeEl = document.getElementById('qr-size');
     const eccEl = document.getElementById('qr-ecc');
     const size = parseInt(sizeEl.value, 10) || 512;
     const ecc = eccEl.value || 'M';
-
     let qr;
     try {
       qr = construirQR(r.content, ecc);
@@ -313,23 +292,27 @@ const QR = (() => {
       return;
     }
     if (!qr) { toast('El contenido es demasiado largo', 'error'); return; }
-    console.log('[QR] QR construido, módulos:', qr.getModuleCount());
-
     ultimo = { qr, content: r.content, resumen: r.resumen, tipo: tipoActivo, size, ecc };
-
     const preview = document.getElementById('qr-preview');
+    if (!preview) { toast('Error: falta contenedor', 'error'); return; }
     preview.innerHTML = '';
     preview.appendChild(renderCanvas(qr, size, true));
-
     document.getElementById('qr-vacio').hidden = true;
     document.getElementById('qr-acciones').hidden = false;
     const cont = document.querySelector('.qr-preview-container');
     if (cont) cont.classList.add('has-qr');
-
     guardarEnHistorial({ tipo: tipoActivo, resumen: r.resumen, content: r.content });
     vibrar(10);
     toast('QR generado');
-    console.log('[QR] Preview mostrada');
+    if (window.innerWidth < 860) {
+      if (document.activeElement && document.activeElement.blur) {
+        document.activeElement.blur();
+      }
+      setTimeout(() => {
+        const c = document.querySelector('.qr-preview-container');
+        if (c) c.scrollIntoView({ behavior: 'smooth', block: 'center' });
+      }, 250);
+    }
   }
 
   function renderCanvas(qr, targetSize, useDPR) {
@@ -342,8 +325,7 @@ const QR = (() => {
     const dpr = useDPR ? Math.min(window.devicePixelRatio || 1, 2) : 1;
     canvas.width = size * dpr;
     canvas.height = size * dpr;
-    canvas.style.width = size + 'px';
-    canvas.style.height = size + 'px';
+    canvas.style.maxWidth = size + 'px';
     const ctx = canvas.getContext('2d');
     ctx.scale(dpr, dpr);
     ctx.fillStyle = '#ffffff';
@@ -437,19 +419,14 @@ const QR = (() => {
       return;
     }
     if (vacio) vacio.hidden = true;
-
     lista.innerHTML = hist.map((h, i) => {
-      const resumen = h.resumen || '';
-      const fecha = h.fecha || '';
-      const tipo = h.tipo || '';
       return '<li>' +
-        '<span class="qr-hist-tipo">' + escapeHtml(tipo) + '</span>' +
-        '<span class="qr-hist-resumen">' + escapeHtml(resumen) + '</span>' +
-        '<span class="qr-hist-fecha">' + escapeHtml(fecha) + '</span>' +
+        '<span class="qr-hist-tipo">' + escapeHtml(h.tipo || '') + '</span>' +
+        '<span class="qr-hist-resumen">' + escapeHtml(h.resumen || '') + '</span>' +
+        '<span class="qr-hist-fecha">' + escapeHtml(h.fecha || '') + '</span>' +
         '<button type="button" class="btn btn-ghost btn-sm qr-hist-regenerar" data-i="' + i + '" title="Regenerar">↻</button>' +
         '</li>';
     }).join('');
-
     lista.querySelectorAll('.qr-hist-regenerar').forEach(btn => {
       btn.addEventListener('click', () => {
         const idx = parseInt(btn.dataset.i, 10);
